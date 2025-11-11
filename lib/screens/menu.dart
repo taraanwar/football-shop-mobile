@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:football_shop/widgets/left_drawer.dart';
+import 'package:football_shop/widgets/product_card.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -10,7 +12,7 @@ class MyHomePage extends StatelessWidget {
   final List<ItemHomepage> items = [
     ItemHomepage("All Products", Icons.store),
     ItemHomepage("My Products", Icons.inventory_2),
-    ItemHomepage("Create Product", Icons.add),
+    ItemHomepage("Add Product", Icons.add),
   ];
 
   @override
@@ -26,6 +28,7 @@ class MyHomePage extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      drawer: LeftDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -53,16 +56,16 @@ class MyHomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  GridView.count(
-                    primary: true,
-                    padding: const EdgeInsets.all(20),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    crossAxisCount: 3,
-                    shrinkWrap: true,
-                    children: items.map((ItemHomepage item) {
-                      return ItemCard(item);
-                    }).toList(),
+                  GridView.count( 
+                    primary: true, 
+                    padding: const EdgeInsets.all(20), 
+                    crossAxisSpacing: 10, 
+                    mainAxisSpacing: 10, 
+                    crossAxisCount: 3, 
+                    shrinkWrap: true, 
+                    children: items.map((ItemHomepage item) { 
+                      return ProductCard(item); 
+                      }).toList(),
                   ),
                 ],
               ),
@@ -107,54 +110,4 @@ class ItemHomepage {
   final IconData icon;
 
   ItemHomepage(this.name, this.icon);
-}
-
-class ItemCard extends StatelessWidget {
-  final ItemHomepage item;
-
-  const ItemCard(this.item, {super.key});
-
-  Color _bgColorFor(String name) {
-    if (name == "All Products") return Colors.blue;
-    if (name == "My Products") return Colors.green;
-    return Colors.red;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: _bgColorFor(item.name),
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text("You have pressed the ${item.name} button")),
-            );
-        },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

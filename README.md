@@ -1,3 +1,50 @@
+Assignment 8
+1) Difference between Navigator.push() and Navigator.pushReplacement()
+
+Navigator.push() opens a new page on top of the current one, meaning the user can go back using the back button.
+I used this in Create Product on the home page, because after adding a product, it makes sense for users to return to the main screen.
+
+Navigator.pushReplacement(), on the other hand, replaces the current page completely. I used this in the Drawer, since switching between “Home” and “Add Product” shouldn’t leave multiple copies of those pages in the stack. 
+
+2) Using Scaffold, AppBar, and Drawer for consistent structure
+
+Every page in my app uses Scaffold as the main layout container, it gives a consistent structure with an app bar, body, and drawer slot.
+
+The AppBar holds the page title “Football Shop” with a blue brand color so users always know where they are.
+
+The Drawer (LeftDrawer) acts as a global navigation menu to move between Home and Add Product.
+
+By repeating these three widgets across screens, the layout feels uniform and professional, just like a real multi-page app.
+
+3) Advantages of Padding, SingleChildScrollView, and ListView
+
+Padding: keeps every input field readable and not cramped together. I added it around each form field in ProductFormPage so it looks neat and easy to use.
+
+SingleChildScrollView: allows the form to scroll if the keyboard covers inputs or if the screen is small. Without it, Flutter would show overflow warnings.
+Example:
+body: Form(
+  key: _formKey,
+  child: SingleChildScrollView(child: Column(...)),
+)
+
+ListView: useful when there are many fields or items. My form uses a column since it’s short, but if I had more dynamic inputs, ListView would be the better choice.
+
+Overall, these layout widgets make the form responsive, scrollable, and user friendly on any device.
+
+4) Setting a consistent color theme for the Football Shop
+
+In main.dart, I used a color scheme with a blue primary and blueAccent secondary.
+This theme is shared across all screens through Theme.of(context).colorScheme, so the app feels cohesive and brand-specific.
+
+theme: ThemeData(
+  colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+      .copyWith(secondary: Colors.blueAccent[400]),
+),
+
+The app bar, buttons, and drawer header all use colors from this scheme, while the three main homepage buttons (blue, green, red) still keep their individual colors for clear functional distinction.
+This combination makes the overall look consistent but still visually interesting and easy to navigate.
+
+Assignemnt 7
 1) Widget tree & parent–child
 
 The widget tree basically describes how every part of the app is built and connected. Each widget can contain other widgets, parents wrap or position their children and can pass data down to them. The children decide how they look and behave. When something changes, Flutter only rebuilds the parts of the tree that need updating.
