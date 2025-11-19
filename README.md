@@ -1,3 +1,34 @@
+Assingment 9
+1) Why I needed a Dart model for JSON
+
+When receiving or sending JSON, having a Dart model makes everything safer and easier to manage. It gives clear types for every field, helps with null safety, and avoids mistakes like typos on map keys. Without a model, everything becomes dynamic, which is harder to maintain and very easy to break if the backend changes a field name or type. Using a model also keeps the code cleaner and much more organized, especially when the project grows.
+
+2) Purpose of http vs CookieRequest
+
+The http package is just a normal HTTP client. It can send GET/POST requests but doesn’t handle cookies or sessions at all.
+CookieRequest is specifically made for this course and Django—it automatically stores and sends cookies, which means login, logout, and authenticated requests work correctly. In this assignment, I rely on CookieRequest for all authentication-related features because it keeps the session alive across pages.
+
+3) Why CookieRequest must be shared globally
+
+I wrapped my entire app with a Provider that holds one shared CookieRequest instance. This is important because the login session only exists inside that single instance. If every page had its own CookieRequest, Django would treat the user as logged out on all other pages. By sharing it globally, the user stays logged in everywhere until they log out.
+
+4) Connectivity setup between Flutter and Django
+
+To let Flutter talk to Django, a few configurations are required. 10.0.2.2 must be added to ALLOWED_HOSTS so the Android emulator can reach the laptop’s localhost. CORS and SameSite cookie settings must be enabled, otherwise authentication cookies won't be accepted by the browser or emulator. Android also needs the Internet permission in the manifest; without it, the app simply can’t make any requests. If any of these settings are missing, requests will either be blocked, fail silently, or lose their login session.
+
+5) How data travels from Flutter to Django and back
+
+When the user fills a form in Flutter, the values are collected through controllers, turned into JSON, and sent to Django using request.postJson(). Django reads the JSON, creates or processes the object, then responds with another JSON message. Flutter receives that response, decodes it back into a Dart model, and displays it on the screen. The flow is basically: user input → JSON → Django → database → JSON → Flutter UI.
+
+6) Authentication flow for login, register, and logout
+
+For registration and login, Flutter sends the username and password to Django through CookieRequest. Django checks the credentials using its built-in auth system. If successful, Django creates a session and sends back cookies, which CookieRequest stores automatically. After that, the user can access authenticated pages. Logout works the same way—Flutter calls the logout endpoint, Django clears the session, and CookieRequest removes the stored cookies. Then the app redirects the user back to the login screen.
+
+7) How I completed the checklist step-by-step
+
+I started by setting up Django’s authentication endpoints (login, register, logout) and making sure they returned JSON. Then I connected Flutter to Django by adding Provider + CookieRequest. I built the login and registration pages first, followed by the home screen and drawer. After that, I created a Dart model that matched my Django item model, and I built a page that shows all items from the /json/ endpoint. I added the item detail page, which opens when tapping a card in the list. Finally, I implemented filtering by only showing products that match the logged-in user’s user_id, and made sure “My Products” works from both the grid and the drawer.
+
+
 Assignment 8
 1) Difference between Navigator.push() and Navigator.pushReplacement()
 
